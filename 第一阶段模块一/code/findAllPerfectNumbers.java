@@ -1,7 +1,7 @@
 /*
     找出1000以内所有的完数
  */
-public class findAllPerfectNumbers {
+public class FindAllPerfectNumbers {
     public static void main (String[] args){
         System.out.print("1000以内的完数有：");
         for(int i = 1; i <= 1000; i++){
