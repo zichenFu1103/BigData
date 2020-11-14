@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <table border="1px" width="50%" height="450px" cellspacing="0">
+            <tr>
+                <th>编号</th>
+                <th>书籍名称</th>
+                <th>出版日期</th>
+                <th>价格</th>
+                <th>购买数量</th>
+                <th>操作</th>
+            </tr>
+            <tr v-for="(element, index) in books" align="center">
+                <td>{{index + 1}}</td>
+                <td>{{element.name}}</td>
+                <td>{{element.date}}</td>
+                <td>¥{{element.totalPrice}}</td>
+                <td><button @click="minus(index)">-</button>{{element.number}}<button  @click="add(index)">+</button></td>
+                <td><button @click="remove(index)">移除</button></td>
+            </tr>
+        </table>
+        <h2>总价格：¥ {{finalPrice}}</h2>
+        <i class="fa fa-line-chart" aria-hidden="true"></i>
+    </div>
+    
+</body>
+<script>
+    new Vue({
+        el: "#app",
+        data: {
+            books:[
+                {
+                    name: "java编程思想",
+                    date: "2020-9",
+                    price: 98.00,
+                    number: 1,
+                    totalPrice: 98.00
+                },
+                {
+                    name: "数据分析与数据原理",
+                    date: "2019-2",
+                    price: 39.00,
+                    number: 1,
+                    totalPrice: 39.00
+                },
+                {
+                    name: "Hadoop权威大全",
+                    date: "2019-10",
+                    price: 59.00,
+                    number: 1,
+                    totalPrice: 59.00
+                },
+                {
+                    name: "代码大全",
+                    date: "2018-8",
+                    price: 128.00,
+                    number: 1,
+                    totalPrice: 128.00
+                },
+            ],
+            finalPrice:0.00
+        },
+        methods: {
+            minus(index){
+                var currentNum = this.books[index].number;
+                if(currentNum != 0){
+                    currentNum = currentNum - 1
+                    this.books[index].number = currentNum;
+                    this.books[index].totalPrice = currentNum*this.books[index].price; 
+                    this.finalPrice = this.finalPrice - this.books[index].price; 
+                }
+            },
+            add(index){
+                var currentNum = this.books[index].number;
+                currentNum = currentNum + 1;
+                this.books[index].number = currentNum;
+                this.books[index].totalPrice = currentNum*this.books[index].price;  
+                this.finalPrice = this.finalPrice + this.books[index].price; 
+            },
+            remove(index){
+                if(confirm("您是否确认删除？")){
+                    this.finalPrice -= this.books[index].totalPrice;
+                    this.books.splice(index,1);
+                }
+            }
+        },
+        beforeMount(){
+            var value = 0; 
+            this.books.forEach(element => {
+                value += element.totalPrice;
+            });                
+            this.finalPrice = value;
+        }
+    });
+</script>
+</html>
