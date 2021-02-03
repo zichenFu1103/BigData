@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zichen.mapper.UserMapper">
+
+<!--    封装返回类型resultMap-->
+    <resultMap id="resultMap" type="User">
+        <constructor>
+            <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+            <arg column="username" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="password" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="email" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="phone" jdbcType="VARCHAR" javaType="java.lang.String"/>
+            <arg column="create_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+            <arg column="update_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        </constructor>
+    </resultMap>
+
+<!--    抽取sql片段-->
+    <sql id="field">
+        id, username, password, email, phone, create_time, update_time
+    </sql>
+
+<!--    根据name查寻是否存在-->
+    <select id="checkUserName" resultType="int" parameterType="String">
+        select count(1) from User where username = #{username}
+    </select>
+
+<!--    根据username和password登陆-->
+    <select id="selectLogin" resultMap="resultMap">
+        select <include refid="field"/>
+        from User
+        where username = #{username}
+        and password = #{password}
+    </select>
+
+
+<!--    获取用户-->
+    <select id="userList" resultType="User">
+        select <include refid="field"/> from User order by id asc
+    </select>
+
+<!--    校验邮箱-->
+    <select id="checkEmail" parameterType="String" resultType="int">
+        select count(1) from User where email = #{email}
+    </select>
+
+<!--    添加用户-->
+    <insert id="insertUser" parameterType="User">
+        insert into User (id,username,password,email ,phone ,create_time,update_time)
+        values (null,#{username},#{password},#{email},#{phone},now(),now())
+    </insert>
+
+<!--    根据主键查询用户-->
+    <select id="selectByPrimaryKey" parameterType="int" resultType="User">
+        select <include refid="field"/> from User where id = #{id}
+    </select>
+
+<!--    根据主键删除用户-->
+    <delete id="deleteByPrimaryKey" parameterType="int">
+        delete from User where id = #{id}
+    </delete>
+
+    <update id="update" parameterType="User">
+        update User set username = #{username}, email = #{email}, phone = #{phone}, update_time = now()
+        where id = #{id}
+    </update>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zichen.mapper.EduMapper">
+    <select id="getEduCount" resultType="ConvertVo">
+        select edu as name, count(*) as value
+        from position_info_v2
+        where edu in('中专/中技','大专','本科','硕士','博士')
+        group by edu order by value desc;
+    </select>
+</mapper>

@@ -1,0 +1,16 @@
+package com.zichen.vo;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+public class SalaryVo {
+
+    private String cityName;
+    private double salary;
+
+}

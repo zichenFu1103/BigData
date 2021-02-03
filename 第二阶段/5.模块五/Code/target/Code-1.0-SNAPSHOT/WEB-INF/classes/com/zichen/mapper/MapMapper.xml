@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zichen.mapper.MapMapper">
+
+    <resultMap id="provinceResultMap" type="ProvinceVo">
+        <id column="ProvinceID" property="pid"/>
+        <result column="pName" property="name"/>
+        <collection property="city" javaType="list" ofType="CityVo">
+            <id column="CityID" property="cid"/>
+            <result column="cName" property="cname"/>
+        </collection>
+    </resultMap>
+
+<!--    查询每个省有多少个城市-->
+    <select id="getProvinceCity" resultMap="provinceResultMap" >
+        select p.ProvinceId, p.NAME pName, c.NAME cName
+        from Province p
+        left join City c
+        on c.ProvinceID = p.ProvinceID;
+    </select>
+
+    <!--    查寻每个城市有多少个岗位-->
+    <select id="getCityNum" resultType="CityVo">
+        select position_city cname, count(*) number
+        from position_info_v2
+        where position_city != ''
+        group by position_city order by number desc;
+    </select>
+</mapper>
